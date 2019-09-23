@@ -1,0 +1,27 @@
+Timed Animal Manipulation Data Logger (TAMDL).
+
+It consists of the following components:
+- Control.c - Sequence Control module.
+- CfgData.c - Handling of configuration data.
+- ExtInt.c - External interrupt handler.
+- Keys.c - Key interrupt handling and translation.
+- AlarmClock.c - Alarm clock and timers facility.
+- DCF77.c - DCF77 Atomic Clock Decoder
+- clock.c - An implementation of the POSIX time() function.
+- LCD_DOGM162.c - Driver for the DOGM162 LC-Display.
+- DisplayMenu.c - Display manager for Menus and LCD.
+- DM_Clock_Transp.c - Display Module to show Clock and Transponder number
+- DM_PowerOutput.c - Display Module to switch @ref Power_Outputs
+- DM_BatteryStatus.c - Display Module to show current Battery Status
+- DM_PowerTimes.c - Display Module to show all configured ON/OFF Times.
+- RFID.c - RFID reader to receive transponder IDs.
+- BatteryMon.c - Battery monitor, periodically reads the state of the
+  battery via the SMBus.
+- LEUART.c - The Low-Energy UART can be used as monitoring and debugging
+  connection to a host computer.
+- microsd.c - Together with the files "diskio.c" and "ff.c", this module
+  provides an implementation of a FAT file system on the @ref SD_Card.
+- Logging.c - Logging facility to send messages to the LEUART and store
+  them into a file on the SD-Card.
+- eeprom_emulation.c - Routines to store data in Flash, taken from AN0019.
+- PowerFail.c - Handler to switch off all loads in case of Power Fail
