@@ -13,7 +13,7 @@ as well as in laboratory settings
 - There are 3 switchable power outputs
 - All of these outputs can be switched on or off at selectable times
 
-![My image](https://github.com/peterloes/TAMDL/blob/master/1_Getting_Started_Tutorial/2_Electronic_board.jpg)
+![My image](https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/2_Electronic_board.jpg)
 
 - Time Synchronization onces a day
 - Application Current Control twice a day
@@ -23,7 +23,7 @@ as well as in laboratory settings
 - Low-Power Device 
 - Measure Voltage and Current from your triggered devices 
  
-![My image](https://github.com/peterloes/TAMDL/blob/master/1_Getting_Started_Tutorial/1_LongRangeReader.jpg)
+![My image](https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/1_LongRangeReader.jpg)
 
 Prototype: Activity Logger
 
