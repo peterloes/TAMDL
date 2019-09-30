@@ -27,7 +27,14 @@ as well as in laboratory settings
 
 Prototype: Activity Logger
 
-The TAMDL features EFM32 ...the world´s most energy friendly microcontrollers
 
-ARM Cortex-M3 EFM32G230F128
+Optional components
+
+https://github.com/peterloes/Light_Barrier
+
+https://github.com/peterloes/Servo_Engine
+
+https://github.com/peterloes/Linear_Engine
+
+https://github.com/peterloes/Booter_RFID-MS_MOMO_TAMDL
 
