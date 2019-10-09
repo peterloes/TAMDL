@@ -10,7 +10,7 @@ as well as in laboratory settings
 -	Low power consumption and specific data collection lead to long lasting collection periods
 -	Applicable world-wide due to its compatibility with different types of radio clock receivers 
 -	High observation quality through low disturbance of the animals
--       Three user-defined power outputs that can individually be switched on or off at user-defined times
+- Three user-defined power outputs that can individually be switched on or off at user-defined times
 
 ![My image](https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/2_Electronic_board.jpg)
 
@@ -35,4 +35,3 @@ https://github.com/peterloes/Servo_Engine
 https://github.com/peterloes/Linear_Engine
 
 https://github.com/peterloes/Booter_RFID-MS_MOMO_TAMDL
-
