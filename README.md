@@ -1,6 +1,8 @@
 ﻿# Timed Animal Manipulation Data Logger (TAMDL)
 use a Timer to trigger your devices
 
+Authors: Peter Loës, Peter Skripsky, and Bart Kempenaers (2019)
+
 Platform for Animal Observation and Manipulation 
 
 An efficient system to monitor animal behaviour in wildlife
