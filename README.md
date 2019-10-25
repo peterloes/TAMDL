@@ -1,7 +1,7 @@
 ﻿# Timed Animal Manipulation Data Logger (TAMDL)
 use a Timer to trigger your devices
 
-Authors: Peter Loës, Peter Skripsky, Bart Kempenaers (2019) [![DOI](https://zenodo.org/badge/210340480.svg)](https://zenodo.org/badge/latestdoi/210340480)
+Authors: Loës P., Skripsky P., Kempenaers B. (2019) [![DOI](https://zenodo.org/badge/210340480.svg)](https://zenodo.org/badge/latestdoi/210340480)
 
 Platform for Animal Observation and Manipulation 
 
