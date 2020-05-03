@@ -1,10 +1,10 @@
-DCF77 Empfänger AASV DCFn PON/Ri/1m Aktivantenne SV DCFn 
+DCF77 EmpfÃ¤nger AASV DCFn PON/Ri/1m Aktivantenne SV DCFn 
 
 HKW-Elektronik GmbH
-Jörg Schneider
+JÃ¶rg Schneider
 
 Eisenacher Str. 42 b
-99848 Wutha-Farnroda / Thür.
+99848 Wutha-Farnroda / ThÃ¼r.
 Germany
 Phone:  +49 (0)36921 3080 130
 mailto:    schneider@hkw-elektronik.de
@@ -17,7 +17,7 @@ Lithium Ionen Akkupack Art.Nr. 60.16294 Panasonic NCR 18650GA 4S2P
 DYNAMIS Batterien GmbH
 Josef Pfeil
 
-Brühlstraße 15  D- 78465 Dettingen / Konstanz
+BrÃ¼hlstraÃŸe 15  D- 78465 Dettingen / Konstanz
 Tel. +49 (0) 75 33/93 669-15
 mailto:josef.pfeil@dynamis-batterien.de
 www.dynamis-batterien.de
@@ -58,7 +58,7 @@ www.top-print.eu
 
 
 Nanomodule Multi 125LV A/1.11 (T3NM-LV) Art.Nr. ART10413 //Short Range
-ANT002 Rundspule 47mm, 490µH Art.Nr. ART 10668
+ANT002 Rundspule 47mm, 490ÂµH Art.Nr. ART 10668
 
 Elatec GmbH
 Felix Ellspermann
@@ -82,3 +82,18 @@ Germany
 Office: +49 (0)2265 9919-14
 E-Mail: rasmus.forntheil@smartrac-group.com
 Internet: www.smartrac-group.com
+
+Beschichtung mit Schmelzharz Bectron MR3404
+
+KC â€“ Kunststoff- Chemische Produkte GmbH
+Holger Sarau-Burghardt
+
+Leonberger StraÃŸe 86 
+DE 71292 Friolzheim
+phone: +49 (0)7044 9425 13
+e-mail: h.sarau-burghardt@kc-produkte.com
+http: www.conformalcoating.de
+
+
+Industrial SD Cards ATP 2GB
+https://www.atpinc.com/products/industrial-sd-cards
