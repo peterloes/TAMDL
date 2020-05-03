@@ -28,7 +28,7 @@ as well as in laboratory settings
 
 Prototype: Activity Logger
 
-Timed camera trap on top of Nestbox:
+Timed camera trap on nestbox top:
 
 https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/1_poster_overview_1.pdf
 
