@@ -28,6 +28,8 @@ as well as in laboratory settings
 
 Prototype: Activity Logger
 
+https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/1_poster_overview_1.pdf
+
 Optional components:
 
 https://github.com/peterloes/Light_Barrier
