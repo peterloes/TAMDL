@@ -2,13 +2,15 @@
  * @file
  * @brief	Project configuration file
  * @author	Ralf Gerhauser
- * @version	2016-02-27
+ * @version	2020-05-12
  *
  * This file allows to set miscellaneous configuration parameters.  It must be
  * included by all modules.
  *
  ****************************************************************************//*
 Revision History:
+2020-05-12,rage	Use defines XXX_POWER_ALARM instead of ENUMs.
+		Power Alarms are grouped in ON and OFF alarms now.
 2016-02-26,rage	Increased LOG_BUF_SIZE to 4KB.
 2016-02-10,rage	Set DFLT_RFID_POWER_OFF_TIMEOUT to 6 minutes.
 2014-11-11,rage	Derived from project "AlarmClock".
@@ -227,37 +229,41 @@ typedef struct
  * This is the list of Alarm IDs used by this application.  They are used to
  * identify a particular alarm time entry via the <b>alarmNum</b> parameter
  * when calling alarm functions, e.g. AlarmSet().
+ * The configurable Power Alarms must be grouped in ON and OFF alarms to be able
+ * to use a single index for all, see CheckAlarmTimes() and AlarmPowerControl().
  */
 typedef enum
 {
     ALARM_DCF77_WAKE_UP,    //!< Wake up DCF77 to synchronize the system clock
     ALARM_BATTERY_MON_1,    //!< Time #1 for logging battery status
     ALARM_BATTERY_MON_2,    //!< Time #2 for logging battery status
+ // List of programmable Alarm ON Times
     ALARM_UA1_ON_TIME_1,    //!< Time #1 when to switch UA1 output ON
     ALARM_UA1_ON_TIME_2,    //!< Time #2 when to switch UA1 output ON
     ALARM_UA1_ON_TIME_3,    //!< Time #3 when to switch UA1 output ON
     ALARM_UA1_ON_TIME_4,    //!< Time #4 when to switch UA1 output ON
     ALARM_UA1_ON_TIME_5,    //!< Time #5 when to switch UA1 output ON
-    ALARM_UA1_OFF_TIME_1,   //!< Time #1 when to switch UA1 output OFF
-    ALARM_UA1_OFF_TIME_2,   //!< Time #2 when to switch UA1 output OFF
-    ALARM_UA1_OFF_TIME_3,   //!< Time #3 when to switch UA1 output OFF
-    ALARM_UA1_OFF_TIME_4,   //!< Time #4 when to switch UA1 output OFF
-    ALARM_UA1_OFF_TIME_5,   //!< Time #5 when to switch UA1 output OFF
     ALARM_UA2_ON_TIME_1,    //!< Time #1 when to switch UA2 output ON
     ALARM_UA2_ON_TIME_2,    //!< Time #2 when to switch UA2 output ON
     ALARM_UA2_ON_TIME_3,    //!< Time #3 when to switch UA2 output ON
     ALARM_UA2_ON_TIME_4,    //!< Time #4 when to switch UA2 output ON
     ALARM_UA2_ON_TIME_5,    //!< Time #5 when to switch UA2 output ON
-    ALARM_UA2_OFF_TIME_1,   //!< Time #1 when to switch UA2 output OFF
-    ALARM_UA2_OFF_TIME_2,   //!< Time #2 when to switch UA2 output OFF
-    ALARM_UA2_OFF_TIME_3,   //!< Time #3 when to switch UA2 output OFF
-    ALARM_UA2_OFF_TIME_4,   //!< Time #4 when to switch UA2 output OFF
-    ALARM_UA2_OFF_TIME_5,   //!< Time #5 when to switch UA2 output OFF
     ALARM_BATT_ON_TIME_1,   //!< Time #1 when to switch BATT output ON
     ALARM_BATT_ON_TIME_2,   //!< Time #2 when to switch BATT output ON
     ALARM_BATT_ON_TIME_3,   //!< Time #3 when to switch BATT output ON
     ALARM_BATT_ON_TIME_4,   //!< Time #4 when to switch BATT output ON
     ALARM_BATT_ON_TIME_5,   //!< Time #5 when to switch BATT output ON
+ // List of programmable Alarm OFF Times
+    ALARM_UA1_OFF_TIME_1,   //!< Time #1 when to switch UA1 output OFF
+    ALARM_UA1_OFF_TIME_2,   //!< Time #2 when to switch UA1 output OFF
+    ALARM_UA1_OFF_TIME_3,   //!< Time #3 when to switch UA1 output OFF
+    ALARM_UA1_OFF_TIME_4,   //!< Time #4 when to switch UA1 output OFF
+    ALARM_UA1_OFF_TIME_5,   //!< Time #5 when to switch UA1 output OFF
+    ALARM_UA2_OFF_TIME_1,   //!< Time #1 when to switch UA2 output OFF
+    ALARM_UA2_OFF_TIME_2,   //!< Time #2 when to switch UA2 output OFF
+    ALARM_UA2_OFF_TIME_3,   //!< Time #3 when to switch UA2 output OFF
+    ALARM_UA2_OFF_TIME_4,   //!< Time #4 when to switch UA2 output OFF
+    ALARM_UA2_OFF_TIME_5,   //!< Time #5 when to switch UA2 output OFF
     ALARM_BATT_OFF_TIME_1,  //!< Time #1 when to switch BATT output OFF
     ALARM_BATT_OFF_TIME_2,  //!< Time #2 when to switch BATT output OFF
     ALARM_BATT_OFF_TIME_3,  //!< Time #3 when to switch BATT output OFF
@@ -266,8 +272,28 @@ typedef enum
     NUM_ALARM_IDS
 } ALARM_ID;
 
-/*!@brief Define holds the maximum alarm time ENUM for Power Output control */
-#define MAX_ALARM_TIME_ENUM	ALARM_BATT_OFF_TIME_5
+/*
+ * !@brief These defines hold the first and last alarm time ENUM for Power
+ * Output control, and the number of alarm ON, resp. OFF times.
+ */
+//@{
+#define FIRST_POWER_ALARM	ALARM_UA1_ON_TIME_1
+#define LAST_POWER_ALARM	ALARM_BATT_OFF_TIME_5
+#define NUM_POWER_ALARMS	(LAST_POWER_ALARM - ALARM_UA1_OFF_TIME_1 + 1)
+//@}
+
+/*
+ * !@brief The following defines set the first on and off alarm, and the number
+ * of alarm time entries of a specific power output.
+ */
+//@{
+#define FIRST_ALARM_ON_TIME	ALARM_UA1_ON_TIME_1
+#define FIRST_ALARM_OFF_TIME	ALARM_UA1_OFF_TIME_1
+#define NUM_ALARM_UA1		5
+#define NUM_ALARM_UA2		5
+#define NUM_ALARM_BATT		5
+//@}
+
 
 /*!@brief Enumeration of the EM1 Modules
  *

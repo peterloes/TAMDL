@@ -2,7 +2,7 @@
  * @file
  * @brief	TAMDL
  * @author	Ralf Gerhauser
- * @version	2018-10-09
+ * @version	2020-05-12
  *
  * This application consists of the following modules:
  * - main.c - Initialization code and main execution loop.
@@ -66,6 +66,7 @@
  *
  ****************************************************************************//*
 Revision History:
+2020-05-12,rage	Call CheckAlarmTimes() after CONFIG.TXT has been read.
 2018-10-09,rage	Moved DMA related variables to module "DMA_ControlBlock.c".
 		Calling VerifyConfiguration() ensures data is valid.
 2018-03-02,rage	Initial version.
@@ -266,6 +267,10 @@ Revision History:
  * -# LEDs are switched off after 4 seconds
  * -# The Battery Monitor is initialized
  * -# The DCF77 Atomic Clock is enabled to receive the time signal
+ * -# When valid times have been received twice, the system clock is set and
+ *    alarm times are converted to the appropriate time zone (MEZ or MESZ)
+ * -# Alarm times are checked against the current time, devices are enabled
+ *    when time is in range
  *
  * The program then enters the Service Execution Loop which takes care of:
  * - Power management for the RFID reader
@@ -631,6 +636,9 @@ int main( void )
 
 		/* Flush log buffer again and switch SD-Card power off */
 		LogFlush(false);
+
+		/* See if devices must be switched on at this time */
+		CheckAlarmTimes();
 	    }
 
 	    /* Check Battery State */
