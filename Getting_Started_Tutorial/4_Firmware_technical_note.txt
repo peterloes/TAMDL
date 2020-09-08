@@ -1,5 +1,15 @@
 Timed Animal Manipulation Data Logger (TAMDL).
 
+Version 1.4
+- Added support for battery controller TI bq40z50.
+  LogBatteryInfo: Removed SBS_ManufacturerData.
+  Display SBS_RunTimeToEmpty in days/hours/min.
+  Display SBS_SerialNumber as hex value.
+- CheckAlarmTimes to call the respective alarm action if the current time matches the alarm time.
+  Reading the configuration file CONFIG.TXT from the SD-Card and set-up alarm action.
+- Corrected decoding of Short-Range(SR) RFID Reader transponder ID.
+
+
 It consists of the following components:
 - Control.c - Sequence Control module.
 - CfgData.c - Handling of configuration data.
