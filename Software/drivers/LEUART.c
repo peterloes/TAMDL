@@ -99,7 +99,7 @@ volatile bool	g_flgLEUART_LF2CRLF = true;
 volatile bool	g_flgCmdLine;
 
 /*!@brief Command line buffer */
-uint8_t	 g_CmdLine[CMD_LINE_SIZE];
+char	 g_CmdLine[CMD_LINE_SIZE];
 #endif
 
 /*================================ Local Data ================================*/
@@ -393,7 +393,7 @@ void LEUART_IRQHandler(void)
 {
 uint32_t leuartif, len;
 
-    /* Store and reset pending interupts */
+    /* Store and reset pending interrupts */
     leuartif = LEUART_IntGet(LEUART);
     LEUART_IntClear(LEUART, leuartif);
 
