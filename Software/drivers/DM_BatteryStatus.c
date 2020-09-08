@@ -35,6 +35,8 @@
  *
  ****************************************************************************//*
 Revision History:
+2020-07-07,rage	DispBatteryInfo2: Display SBS_RunTimeToEmpty in days/hours/min.
+		DispBatteryInfo6: Display SBS_SerialNumber as hex value.
 2018-03-17,rage	Initial version, based on project "AlarmClock".
 */
 
@@ -172,6 +174,8 @@ BAT_INFO *pBatInfo;
 static void	DispBatteryInfo2 (UPD_ID updId)
 {
 BAT_INFO *pBatInfo;
+int	  data = 0;	// generic signed integer data variable
+int	  d, h, m;	// days, hours, minutes
 
     switch (updId)
     {
@@ -185,11 +189,20 @@ BAT_INFO *pBatInfo;
 	    pBatInfo = BatteryInfoGet();
 	    if (pBatInfo->Done)
 	    {
-		if (pBatInfo->Data_1 >= 65534)
-		    DispPrintf (2, "   >  6 weeks");
+		data = pBatInfo->Data_1;
+		if (data >= 65534)
+		{
+		    DispPrintf (2, "   >  45 days");
+		}
 		else
-		    DispPrintf (2, "%5dmin (%dd)", pBatInfo->Data_1,
-				pBatInfo->Data_1 / 60 / 24);
+		{
+		    d = data / 60 / 24;
+		    data -= (d * 60 * 24);
+		    h = data / 60;
+		    data -= (h * 60);
+		    m = data;
+		    DispPrintf (2, "    %2dd %2dh %2dm", d, h, m);
+		}
 	    }
 	    BatteryInfoReq (SBS_RunTimeToEmpty, SBS_NONE);
 	    break;
@@ -321,7 +334,7 @@ BAT_INFO *pBatInfo;
 	case UPD_SYSCLOCK:	// update values with SYSCLOCK (every second)
 	    pBatInfo = BatteryInfoGet();
 	    if (pBatInfo->Done)
-		DispPrintf (2, "          %05d", pBatInfo->Data_1);
+		DispPrintf (2, "         0x%04X", pBatInfo->Data_1);
 
 	    BatteryInfoReq (SBS_SerialNumber, SBS_NONE);
 	    break;

@@ -2,7 +2,7 @@
  * @file
  * @brief	Display Module: Power Times
  * @author	Ralf Gerhauser
- * @version	2018-10-10
+ * @version	2020-05-12
  *
  * This display module allows you to show all ON and OFF times of the @ref
  * Power_Outputs, as configured by the following variables:
@@ -46,6 +46,7 @@
  *
  ****************************************************************************//*
 Revision History:
+2020-05-12,rage	Using NUM_ALARM_XXX defines instead of calculating counts.
 2018-10-10,rage Added menu entry for Power Cycle Interval and On Duration.
 2018-03-21,rage	Initial version.
 */
@@ -109,16 +110,16 @@ static const ON_OFF_TIME_RANGE OnOffTimeRange[] =
 {
     // #0: On/Off-Time Range for UA1 Power Output
     { "UA1",
-      ALARM_UA1_ON_TIME_1,  (ALARM_UA1_OFF_TIME_1 - ALARM_UA1_ON_TIME_1),
-      ALARM_UA1_OFF_TIME_1, (ALARM_UA2_ON_TIME_1 - ALARM_UA1_OFF_TIME_1)  },
+      ALARM_UA1_ON_TIME_1,  NUM_ALARM_UA1,
+      ALARM_UA1_OFF_TIME_1, NUM_ALARM_UA1	},
     // #1: On/Off-Time Range for UA2 Power Output
     { "UA2",
-      ALARM_UA2_ON_TIME_1,  (ALARM_UA2_OFF_TIME_1 - ALARM_UA2_ON_TIME_1),
-      ALARM_UA2_OFF_TIME_1, (ALARM_BATT_ON_TIME_1 - ALARM_UA2_OFF_TIME_1) },
+      ALARM_UA2_ON_TIME_1,  NUM_ALARM_UA2,
+      ALARM_UA2_OFF_TIME_1, NUM_ALARM_UA2	},
     // #2: On/Off-Time Range for BATT Power Output
     { "BATT",
-      ALARM_BATT_ON_TIME_1,  (ALARM_BATT_OFF_TIME_1 - ALARM_BATT_ON_TIME_1),
-      ALARM_BATT_OFF_TIME_1, (NUM_ALARM_IDS - ALARM_BATT_OFF_TIME_1)      },
+      ALARM_BATT_ON_TIME_1,  NUM_ALARM_BATT,
+      ALARM_BATT_OFF_TIME_1, NUM_ALARM_BATT	},
 };
 
 static DISP_MOD DM_PowerTimes_UA1 =

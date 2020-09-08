@@ -2,7 +2,7 @@
  * @file
  * @brief	DCF77 Atomic Clock Decoder
  * @author	Ralf Gerhauser
- * @version	2016-04-06
+ * @version	2020-05-12
  *
  * This module implements an Atomic Clock Decoder for the signal of the
  * German-based DCF77 long wave transmitter.
@@ -57,6 +57,8 @@
  *
  ****************************************************************************//*
 Revision History:
+2020-05-12,rage	TimeSynchronize: Call ClockSet() after converting alarm times
+		from/to MESZ to provide correct alarms to CheckAlarmTimes().
 2016-04-06,rage	Made local variables of type "volatile".
 		BugFix: implicit MEZ to MESZ change during daylight saving time
 		was misinterpreted during initial time synchronisation.
@@ -792,13 +794,9 @@ static void	TimeSynchronize (struct tm *pTime)
     /* flag to detect whether MEZ<=>MESZ change occurred */
     bool changeOccurred = (g_isdst != (bool)pTime->tm_isdst);
 
-    /* set system clock to DCF77 time */
+    /* set system clock to DCF77 time in "tm" format */
     g_CurrDateTime = *pTime;
     g_isdst = pTime->tm_isdst;		// flag for daylight saving time
-    ClockSet (&g_CurrDateTime, true);	// set milliseconds to zero
-
-    /* show time on display */
-    ClockUpdate (false);	// g_CurrDateTime is already up to date
 
 #if DCF77_ONCE_PER_DAY  &&  defined(LOGGING)
     /* log current DCF77 time */
@@ -838,6 +836,12 @@ static void	TimeSynchronize (struct tm *pTime)
 	    AlarmSet (alarm, hour, minute);
 	}
     }
+
+    /* Set System Clock also in UNIX time and check initially alarm times */
+    ClockSet (&g_CurrDateTime, true);	// set milliseconds of RTC to zero
+
+    /* Show time on display (if applicable) */
+    ClockUpdate (false);	// g_CurrDateTime is already up to date
 }
 
 /***************************************************************************//**

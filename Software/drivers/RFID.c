@@ -2,7 +2,7 @@
  * @file
  * @brief	RFID Reader
  * @author	Ralf Gerhauser
- * @version	2018-10-10
+ * @version	2020-06-03
  *
  * This module provides the functionality to communicate with the @ref
  * RFID_Reader.
@@ -45,6 +45,7 @@
  *
  ****************************************************************************//*
 Revision History:
+2020-06-03,rage	- BugFix: Corrected decoding of SR transponder ID.
 2019-02-10,rage	- BugFix: Absent detection didn't work if transponder ID has
 		  been read just once before disappearing again.
 		- RFID_Decode: Put generic parts at the end of the routine,
@@ -127,8 +128,8 @@ typedef struct
     /*!@brief RFID reader type. */
 RFID_TYPE g_RFID_Type;
 
-    /*!@brief RFID reader type. */
-PWR_OUT   g_RFID_Power;
+    /*!@brief RFID power output. */
+PWR_OUT   g_RFID_Power = PWR_OUT_NONE;
 
     /*!@brief Duration in [s] after which a transponder is treated as absent */
 uint32_t  g_RFID_AbsentDetectTimeout;
@@ -185,7 +186,7 @@ static volatile bool	l_flgRFID_On;
     /*! Flag if RFID reader is currently powered on. */
 static volatile bool	l_flgRFID_IsOn;
 
-    /*! Timer handle for transponder absence detection. */
+    /*! Timer handle for transponder absent detection. */
 static volatile TIM_HDL	l_hdlRFID_AbsentDetect = NONE;
 
 #if RFID_TRIGGERED_BY_LIGHT_BARRIER	// only required for light barriers
@@ -234,6 +235,7 @@ void	RFID_Init (void)
     /* Check if RFID reader is already in use */
     if (l_flgRFID_Activate)
 	RFID_PowerOff();	// power-off and reset reader and UART
+    	l_flgRFID_IsOn = false;
 
     /* Now the RFID reader isn't active any more */
     l_flgRFID_Activate = false;
@@ -265,7 +267,7 @@ void	RFID_Init (void)
 #ifdef LOGGING
     else
     {
-	Log ("WARNING: RFID reader absence detection is disabled");
+	Log ("WARNING: RFID reader absent detection is disabled");
     }
 #endif
 
@@ -696,6 +698,7 @@ static uint16_t	 crc;     // checksum variables
 uint16_t	 val;
 bool	 flgRecvdID = false;
 char	 newTransponder[50]; // also used to store data in case of error message
+int	 offs = 0;	// byte offset within the received transponder message
 int	 i, pos;
 
 
@@ -748,8 +751,9 @@ int	 i, pos;
 		break;			// break!
 
 	    case 13:
-		if (w[13] != xorsum)	// Checksumme vergleichen!
+		if (w[13] != xorsum)	// handle ERROR case
 		{
+		    /* Print Hex Codes of the wrong message */
 		    pos = 0;
 		    for (i=0; i <= 13; i++)
 		    {
@@ -765,6 +769,7 @@ int	 i, pos;
 		}
 
 		flgRecvdID = true;	// ID has been received - set flag
+		offs = 12;		// byte offset within the message
 		break;
 
 	    default:
@@ -780,7 +785,7 @@ int	 i, pos;
 		if (byte != 0x54)
 		{		// (there may be leading zeros)
 		    l_State = 0; // restart state machine
-		    break;	// break!
+		    break;		// break!
 		}
 		/* no break */
 	    case 1:
@@ -809,8 +814,9 @@ int	 i, pos;
 
 	    case 10:	// received complete frame
 		val = (w[10] << 8) | w[9];
-		if (val != crc)		// Checksumme vergleichen!
+		if (val != crc)		// handle ERROR case
 		{
+		    /* Print Hex Codes of the wrong message */
 		    pos = 0;
 		    for (i=0; i <= 10; i++)
 		    {
@@ -826,6 +832,7 @@ int	 i, pos;
 		}
 
 		flgRecvdID = true;	// ID has been received - set flag
+		offs = 8;		// byte offset within the message
 		break;
 
 	    default:
@@ -846,8 +853,8 @@ int	 i, pos;
 
 	for (i=0; i < 8; i++)	// copy w and convert to ASCII HEX
 	{
-	    newTransponder[2*i]	  = HexChar[(w[8-i]>>4) & 0x0F];
-	    newTransponder[2*i+1] = HexChar[(w[8-i]) & 0x0F];
+	    newTransponder[2*i]	  = HexChar[(w[offs-i]>>4) & 0x0F];
+	    newTransponder[2*i+1] = HexChar[(w[offs-i]) & 0x0F];
 	}
 	newTransponder[16] = '\0';
 

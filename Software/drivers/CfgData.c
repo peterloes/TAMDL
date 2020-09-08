@@ -263,7 +263,7 @@ ALARM_TIME *pAlarm;
 const char **ppEnumName;
 
 
-    line--;
+    line--;			// one less character for length calculations
 
     if (skipSpace(&pStr))	// skip white space
 	return;
@@ -421,7 +421,12 @@ const char **ppEnumName;
 	    /* get enum string */
 	    pStrBegin = getString(&pStr);
 	    if (pStrBegin == NULL)
-		break;			// error
+	    {
+		LogError ("Config File - Line %d, %s: "
+			  "No enum value specified", lineNum,
+			  l_pCfgVarList[varIdx].name);
+		return;			// error
+	    }
 
 	    if (l_pEnumDef == NULL)
 	    {
@@ -434,7 +439,7 @@ const char **ppEnumName;
 	    ppEnumName = l_pEnumDef[l_pCfgVarList[varIdx].type
 				    - CFG_VAR_TYPE_ENUM_1];
 
-	    for (i =0;  ppEnumName[i] != NULL;  i++)
+	    for (i = 0;  ppEnumName[i] != NULL;  i++)
 		if (strcmp (ppEnumName[i], pStrBegin) == 0)
 		    break;
 
@@ -445,7 +450,7 @@ const char **ppEnumName;
 			  l_pCfgVarList[varIdx].name, pStrBegin);
 		return;
 	    }
-	    /* Type case (PWR_OUT) is used for ALL types of enums */
+	    /* Type cast (PWR_OUT) is used for ALL types of enums */
 	    *((PWR_OUT *)l_pCfgVarList[varIdx].pData) = (PWR_OUT)i;
 	    break;
 
@@ -490,8 +495,8 @@ char	*pStrBegin = *ppStr;
     /* must be followed by space, comment, or EOS */
     if (**ppStr != EOS)
     {
-	*(*ppStr++) = EOS;		// terminate string
-        (*ppStr)++;		// continue with next characters
+	**ppStr = EOS;		// terminate string
+	(*ppStr)++;		// continue with next characters
 
 	/* skip optional white space at the end of the string */
 	while (isspace ((int)**ppStr))
@@ -563,6 +568,9 @@ ID_PARM	*pID;
 	return;
     }
 
+    drvLEUART_puts ("All times are displayed for timezone ");
+    drvLEUART_puts (g_isdst ? "MESZ\n":"MEZ\n");
+
     /* log all values read from configuration file */
     for (i = 0;  l_pCfgVarList[i].name != NULL;  i++)
     {
@@ -624,6 +632,7 @@ ID_PARM	*pID;
 		    pStr += sprintf (pStr, "ERROR: No enum names defined");
 		    break;
 		}
+		/* Type cast (PWR_OUT) is used for ALL types of enums */
 		idx = *((PWR_OUT *)l_pCfgVarList[i].pData);
 		if (idx < 0)
 		{

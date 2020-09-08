@@ -2,7 +2,7 @@
  * @file
  * @brief	Sequence Control
  * @author	Ralf Gerhauser
- * @version	2018-10-10
+ * @version	2020-05-12
  *
  * This is the automatic sequence control module.  It controls the power
  * outputs and the measurement of their voltage and current.  Calibration
@@ -14,6 +14,9 @@
  *
  ****************************************************************************//*
 Revision History:
+2020-05-12,rage	- Use defines XXX_POWER_ALARM instead of ENUMs.
+		- Power Alarms are grouped in ON and OFF alarms now.
+		- Changed AlarmPowerControl() according to new ALARM_ID enums.
 2019-02-09,rage	- Added configuration variable SCAN_DURATION which specifies the
 		  measurement duration of a single channel in [ms].  Valid range
 		  is 52ms to 2200ms.  There are four channels: U1, I1, U2, I2.
@@ -195,6 +198,7 @@ static volatile uint32_t l_mA_Divider[NUM_MEASURE];
      * Alarm times, i.e. @ref CFG_VAR_TYPE_TIME must be defined first, because
      * the array index is used to specify the alarm number \<alarmNum\>,
      * starting with @ref UA1_ON_TIME_1, when calling AlarmSet().
+     * Keep sequence in sync with @ref ALARM_ID!
      */
 static const CFG_VAR_DEF l_CfgVarList[] =
 {
@@ -204,26 +208,26 @@ static const CFG_VAR_DEF l_CfgVarList[] =
     { "UA1_ON_TIME_3",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "UA1_ON_TIME_4",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "UA1_ON_TIME_5",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA1_OFF_TIME_1",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA1_OFF_TIME_2",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA1_OFF_TIME_3",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA1_OFF_TIME_4",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA1_OFF_TIME_5",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "UA2_ON_TIME_1",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "UA2_ON_TIME_2",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "UA2_ON_TIME_3",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "UA2_ON_TIME_4",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "UA2_ON_TIME_5",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA2_OFF_TIME_1",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA2_OFF_TIME_2",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA2_OFF_TIME_3",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA2_OFF_TIME_4",		CFG_VAR_TYPE_TIME,	NULL		      },
-    { "UA2_OFF_TIME_5",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "BATT_ON_TIME_1",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "BATT_ON_TIME_2",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "BATT_ON_TIME_3",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "BATT_ON_TIME_4",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "BATT_ON_TIME_5",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA1_OFF_TIME_1",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA1_OFF_TIME_2",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA1_OFF_TIME_3",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA1_OFF_TIME_4",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA1_OFF_TIME_5",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA2_OFF_TIME_1",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA2_OFF_TIME_2",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA2_OFF_TIME_3",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA2_OFF_TIME_4",		CFG_VAR_TYPE_TIME,	NULL		      },
+    { "UA2_OFF_TIME_5",		CFG_VAR_TYPE_TIME,	NULL		      },
     { "BATT_OFF_TIME_1",	CFG_VAR_TYPE_TIME,	NULL		      },
     { "BATT_OFF_TIME_2",	CFG_VAR_TYPE_TIME,	NULL		      },
     { "BATT_OFF_TIME_3",	CFG_VAR_TYPE_TIME,	NULL		      },
@@ -379,7 +383,7 @@ int	chan;
     }
 
     /* Use same routine for all power-related alarms */
-    for (i = ALARM_UA1_ON_TIME_1;  i <= MAX_ALARM_TIME_ENUM;  i++)
+    for (i = FIRST_POWER_ALARM;  i <= LAST_POWER_ALARM;  i++)
 	AlarmAction (i, AlarmPowerControl);
 
     /* Initialize configuration with default values */
@@ -401,7 +405,7 @@ void	ClearConfiguration (void)
 int	i;
 
     /* Disable all power-related alarms */
-    for (i = ALARM_UA1_ON_TIME_1;  i <= MAX_ALARM_TIME_ENUM;  i++)
+    for (i = FIRST_POWER_ALARM;  i <= LAST_POWER_ALARM;  i++)
 	AlarmDisable(i);
 
     /* Disable Power Cycle Interval */
@@ -883,8 +887,8 @@ bool	IsPowerOutputOn (PWR_OUT output)
  * @brief	Alarm routine for Power Control
  *
  * This routine is called when one of the power alarm times has been reached.
- * The alarm number is an enum value between @ref ALARM_UA1_ON_TIME_1 and
- * @ref MAX_ALARM_TIME_ENUM.<br>
+ * The alarm number is an enum value between @ref FIRST_POWER_ALARM and
+ * @ref LAST_POWER_ALARM.<br>
  * When an RFID reader has been installed, the function decides whether to
  * call RFID_Enable(), RFID_Disable(), or PowerOutput() directly.
  *
@@ -895,24 +899,35 @@ PWR_OUT	 pwrOut;
 int	 pwrState;
 
     /* Parameter check */
-    EFM_ASSERT (ALARM_UA1_ON_TIME_1 <= alarmNum
-		&& alarmNum <= MAX_ALARM_TIME_ENUM);
+    EFM_ASSERT (FIRST_POWER_ALARM <= alarmNum && alarmNum <= LAST_POWER_ALARM);
 
-    /* Determine Power Output and switching state */
-    if (alarmNum >= ALARM_BATT_ON_TIME_1)
+    /* Determine switching state */
+    pwrState = (alarmNum >= ALARM_UA1_OFF_TIME_1 ? PWR_OFF : PWR_ON);
+
+    /* Determine Power Output */
+    if (alarmNum >= ALARM_BATT_OFF_TIME_1)
     {
 	pwrOut = PWR_OUT_BATT;
-	pwrState = (alarmNum >= ALARM_BATT_OFF_TIME_1 ? PWR_OFF:PWR_ON);
+    }
+    else if (alarmNum >= ALARM_UA2_OFF_TIME_1)
+    {
+	pwrOut = PWR_OUT_UA2;
+    }
+    else if (alarmNum >= ALARM_UA1_OFF_TIME_1)
+    {
+	pwrOut = PWR_OUT_UA1;
+    }
+    else if (alarmNum >= ALARM_BATT_ON_TIME_1)
+    {
+	pwrOut = PWR_OUT_BATT;
     }
     else if (alarmNum >= ALARM_UA2_ON_TIME_1)
     {
 	pwrOut = PWR_OUT_UA2;
-	pwrState = (alarmNum >= ALARM_UA2_OFF_TIME_1 ? PWR_OFF:PWR_ON);
     }
     else
     {
 	pwrOut = PWR_OUT_UA1;
-	pwrState = (alarmNum >= ALARM_UA1_OFF_TIME_1 ? PWR_OFF:PWR_ON);
     }
 
     /* If configured, initiate Power Interval */

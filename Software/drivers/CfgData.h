@@ -28,7 +28,7 @@ typedef enum
     CFG_VAR_TYPE_TIME,		//!< 00:00 to 23:59
     CFG_VAR_TYPE_DURATION,	//!< 0 to n seconds
     CFG_VAR_TYPE_ID,		//!< transponder ID
-    CFG_VAR_TYPE_INTEGER,	//!< positive integer variable
+    CFG_VAR_TYPE_INTEGER,	//!< positive integer variable (0 to n)
     CFG_VAR_TYPE_CONFIG,	//!< configuration data
     CFG_VAR_TYPE_ENUM_1,	//!< enumeration 1
     CFG_VAR_TYPE_ENUM_2,	//!< enumeration 2
