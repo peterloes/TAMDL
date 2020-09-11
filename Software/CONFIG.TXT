@@ -1,0 +1,115 @@
+# Configuration file for TAMDL
+#
+# Revision History
+# 2019-02-10,rage   Added SCAN_DURATION, described U and I threshold values.
+# 2018-10-10,rage   Added variables for Power Cycle Interval and On Duration.
+# 2018-03-15,rage   Initial version
+
+#########################################################################
+#                                                                       #
+#  IMPORTANT NOTE: All time values must be specified in STANDARD time,  #
+#                  i.e. MEZ!  If DCF77 time is MESZ (daylight saving    #
+#                  time), they will automatically converted to MESZ.    #
+#                                                                       #
+#########################################################################
+
+# Configuration Variables in config.txt:
+
+# RFID_TYPE [SR, LR]
+#   RFID reader device type: SR is Short Range reader, LR is Long Range reader.
+#   If no type is specified (i.e. the variable is #-commented), the associated
+#   logic will not be activated.
+
+# RFID_POWER [UA1, UA2, BATT]
+#   RFID reader power source, must be set to UA1 or UA2.
+#   If no value is specified (i.e. the variable is #-commented), the associated
+#   logic will not be activated.
+
+# RFID_ABSENT_DETECT_TIMEOUT [s]
+#   An RFID reader regularly re-sends the ID, as long as the transponder can be
+#   received.  This is used to retrigger a "still present" timer.  The value
+#   specifies the time in seconds, after which the transponder is treated as
+#   "absent" when its ID could not be received again.
+#   A value of 0 disables the absent logic.  This is useful for "fly thru"
+#   designs, e.g. with the Smart Nest Box.
+
+# UA1_ON_TIME_1~5, UA1_OFF_TIME_1~5, UA2_ON_TIME_1~5, UA2_OFF_TIME_1~5,
+# BATT_ON_TIME_1~5, BATT_OFF_TIME_1~5 [hour:min] MEZ
+#   These variables determine the on and off times of the UA1, respective UA2
+#   power output.  If an RFID reader is assigned to an output, the UART will be
+#   activated additionally.
+
+# UA1_INTERVAL, UA1_ON_DURATION, UA2_INTERVAL, UA2_ON_DURATION, BATT_INTERVAL,
+# and BATT_ON_DURATION in [s]
+#   These optional variables allow you to define a Power Cycle Interval within
+#   the on times of the respective power output.  XXX_INTERVAL specifies the
+#   interval in seconds, XXX_ON_DURATION the power ON duration in seconds
+#   within this interval.
+#   The OFF duration is calculated XXX_INTERVAL minus XXX_ON_DURATION.
+#   There exists only one set of values per output.  These are applicable for
+#   all five on/off-times.
+
+# UA1_MEASURE_FOLLOW_UP_TIME, UA2_MEASURE_FOLLOW_UP_TIME, and
+# BATT_MEASURE_FOLLOW_UP_TIME [s]
+#   Duration in [s], the measurement of the respective power output is still
+#   performed.  Additionally, BATT_INP voltage and current is measured via
+#   the battery controller.  For the BATT output, only BATT_INP is measured.
+
+# SCAN_DURATION [ms]
+#   When the ADC has been activated for voltage and current measurements,
+#   this variable specifies how long it lasts to measure one channel. There
+#   are four ADC channels in use: Voltage and current for UA1 and also for UA2
+#   (Battery data is read from its controller).  Within this duration, 2048
+#   single measurements are done per channel, which performs the calculation
+#   of an average value.  Default value is 1000ms.
+
+# UA1_MEASURE_U_MIN_DIFF, UA1_MEASURE_I_MIN_DIFF, UA2_MEASURE_U_MIN_DIFF [mV],
+# and UA2_MEASURE_I_MIN_DIFF [mA]
+#   Threshold values for voltage [mV] and current [mA].  No update is done,
+#   if values change within this range.  Defaults are 100mV and 10mA.
+
+# UA1_CALIBRATE_mV, UA2_CALIBRATE_mV [mV]
+#   Calibration reference voltage for UA1 and UA2, specified in [mV].
+
+# UA1_CALIBRATE_mA, UA2_CALIBRATE_mA [mA]
+#   Calibration reference current for UA1 and UA2, specified in [mA].
+
+    # Calibration values for UA1 and UA2 measuring
+UA1_CALIBRATE_mV    = 9005
+UA1_CALIBRATE_mA    = 926
+UA2_CALIBRATE_mV    = 4888
+UA2_CALIBRATE_mA    = 696
+
+    # RFID configuration
+RFID_TYPE           = LR
+RFID_POWER          = UA1
+RFID_ABSENT_DETECT_TIMEOUT = 5
+
+    # Follow-up times after measurement [s]
+UA1_MEASURE_FOLLOW_UP_TIME  = 60
+UA2_MEASURE_FOLLOW_UP_TIME  = 60
+BATT_MEASURE_FOLLOW_UP_TIME = 30
+
+    # Operating times for UA1 output [hour:min] MEZ
+UA1_ON_TIME_1       = 05:00
+UA1_OFF_TIME_1      = 15:00
+
+    # Power Cycle Interval for UA1 output [s]
+UA1_INTERVAL        = 600   # 10min Interval
+UA1_ON_DURATION     = 300   #  5min On Duration
+
+    # Operating times for UA2 output [hour:min] MEZ
+#UA2_ON_TIME_1       = 07:00
+#UA2_OFF_TIME_1      = 13:00
+
+    # Power Cycle Interval for UA2 output [s]
+#UA2_INTERVAL        = 400
+#UA2_ON_DURATION     = 300
+
+    # Operating times for BATT output [hour:min] MEZ
+#BATT_ON_TIME_1       = 07:00
+#BATT_OFF_TIME_1      = 12:00
+
+    # Power Cycle Interval for BATT output [s]
+#BATT_INTERVAL        = 60
+#BATT_ON_DURATION     = 20
