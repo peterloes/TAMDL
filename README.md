@@ -32,7 +32,7 @@ Timed camera trap on nestbox top:
 
 https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/1_poster_overview_1.pdf
 
-Rawdata:
+Raw data:
 
 https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/6_rawdata_BOX0999.TXT
 
