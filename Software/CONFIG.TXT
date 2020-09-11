@@ -1,4 +1,4 @@
-# Configuration file for TAMDL
+# Configuration file for TAMDL  COPY FILE ON SD CARD
 #
 # Revision History
 # 2019-02-10,rage   Added SCAN_DURATION, described U and I threshold values.
