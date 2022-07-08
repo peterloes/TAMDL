@@ -3,10 +3,10 @@ use a Timer to trigger your devices
 
 Authors: Loës P., Kempenaers B. (2019) [![DOI](https://zenodo.org/badge/210340480.svg)](https://zenodo.org/badge/latestdoi/210340480)
 
-Platform for Animal Observation and Manipulation 
+Platform for animal observation and manipulation. 
 
 An efficient system to monitor animal behaviour in wildlife
-as well as in laboratory settings
+as well as in laboratory settings.
 
 -	Compatible with different RFID systems and triggers
 -	Low power consumption and specific data collection lead to long lasting collection periods
