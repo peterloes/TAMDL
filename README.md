@@ -26,7 +26,7 @@ as well as in laboratory settings.
  
 ![My image](https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/1_LongRangeReader.jpg)
 
-Prototype: Activity Logger
+Picture: Prototype "Activity Logger" with RFID-Reader
 
 Timed camera trap on nestbox top:
 
