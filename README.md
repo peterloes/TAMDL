@@ -1,5 +1,5 @@
 ﻿# Timed Animal Manipulation Data Logger (TAMDL)
-## use timers to trigger your devices
+### use timers to trigger your devices
 
 Authors: Loës P., Kempenaers B. (2019) [![DOI](https://zenodo.org/badge/210340480.svg)](https://zenodo.org/badge/latestdoi/210340480)
 
