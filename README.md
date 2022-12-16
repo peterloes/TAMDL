@@ -20,7 +20,7 @@ as well as in laboratory settings.
 - Current Control twice a day
 - Forecast for Battery-Change implemented
 - Energy Bypass so that Date and Time are maintained even when changing battery
-- Hyperterminal Output, to get real-time data in the field
+- Hyperterminal Output, to get real-time data to the computer/laptop
 - Low-Power Device 
 - Measure Voltage and Current from your triggered devices 
  
