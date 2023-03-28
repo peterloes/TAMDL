@@ -27,7 +27,7 @@ www.dynamis-batterien.de
 
  
 RFID Reader Lichtschranke Artikenr.:170201-00/0 (Long Range)
-// Input power supply max.15Volt.
+//Input power supply max. 15Volt
 
 AFRO Fluginstrumente GmbH
 Andreas Frommwieser
