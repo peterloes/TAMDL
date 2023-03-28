@@ -28,6 +28,8 @@ as well as in laboratory settings.
 
 Picture: Prototype "Activity Logger" with RFID-Reader
 
+https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/1_poster_overview_2.pdf
+
 Timed camera trap on nestbox top:
 
 https://github.com/peterloes/TAMDL/blob/master/Getting_Started_Tutorial/1_poster_overview_1.pdf
